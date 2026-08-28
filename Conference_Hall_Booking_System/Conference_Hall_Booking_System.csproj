@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NewFolder\" />
+    <Folder Include="API\" />
+    <Folder Include="Infrastructure\" />
+    <Folder Include="Application\" />
   </ItemGroup>
 
 </Project>
