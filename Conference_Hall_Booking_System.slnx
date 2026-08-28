@@ -1,6 +1,3 @@
 <Solution>
-  <Folder Name="/API/" />
-  <Folder Name="/Application/" />
-  <Folder Name="/Infrastructure/" />
   <Project Path="Conference_Hall_Booking_System/Conference_Hall_Booking_System.csproj" />
 </Solution>
