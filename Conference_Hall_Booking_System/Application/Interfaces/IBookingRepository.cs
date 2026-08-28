@@ -1,6 +1,6 @@
 ﻿using Conference_Hall_Booking_System.Domain;
 
-namespace ConferenceBookingApi.Application.Interfaces;
+namespace Conference_Hall_Booking_System.Application.Interfaces;
 
 public interface IBookingRepository
 {
