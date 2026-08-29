@@ -26,7 +26,9 @@ namespace Conference_Hall_Booking_System.API.Endpoints
                     return Results.BadRequest(new { Error = ex.Message });
                 }
             })
-            .AddEndpointFilter<ValidationFilter<BookRoomRequest>>();
+            .AddEndpointFilter<ValidationFilter<BookRoomRequest>>()
+            .WithSummary("Create New Booking")
+            .WithDescription("Checks the availability of the room during the specified time, considers all existing bookings to avoid conflicts. Also dynamically calculates the total cost considering peak, standard, and evening hours, as well as the cost of selected additional services.");
         }
     }
 }

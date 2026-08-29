@@ -12,7 +12,8 @@ namespace Conference_Hall_Booking_System.API.Endpoints
             var group = app.MapGroup("/api/rooms").WithTags("Rooms");
 
             group.MapGet("/", async (RoomService service) =>
-                Results.Ok(await service.GetAllRoomsAsync()));
+                Results.Ok(await service.GetAllRoomsAsync())).WithSummary("Get All Rooms")
+                .WithDescription("Returns a list of all rooms in the system.");
 
             group.MapGet("/available", async (DateTime start, DateTime end, int capacity, BookingService bookingService) =>
             {
@@ -23,7 +24,8 @@ namespace Conference_Hall_Booking_System.API.Endpoints
 
                 var availableRooms = await bookingService.GetAvailableRoomsAsync(start, end, capacity);
                 return Results.Ok(availableRooms);
-            });
+            }).WithSummary("Search for Available Rooms")
+              .WithDescription("Returns a list of rooms that can accommodate the specified number of people and have no existing bookings within the given time range.");
 
             group.MapPost("/", async (CreateRoomRequest req, RoomService service) =>
             {
@@ -31,7 +33,9 @@ namespace Conference_Hall_Booking_System.API.Endpoints
                 var id = await service.CreateRoomAsync(room);
                 return Results.Created($"/api/rooms/{id}", new { Id = id });
             })
-            .AddEndpointFilter<ValidationFilter<CreateRoomRequest>>();
+            .AddEndpointFilter<ValidationFilter<CreateRoomRequest>>()
+            .WithSummary("Create New Room")
+            .WithDescription("Creates a new room with the specified name, capacity, and base price per hour.");
 
             group.MapPut("/{id:guid}", async (Guid id, UpdateRoomRequest req, RoomService service) =>
             {
@@ -45,13 +49,16 @@ namespace Conference_Hall_Booking_System.API.Endpoints
                 await service.UpdateRoomAsync(existingRoom);
                 return Results.NoContent();
             })
-            .AddEndpointFilter<ValidationFilter<UpdateRoomRequest>>();
+            .AddEndpointFilter<ValidationFilter<UpdateRoomRequest>>()
+            .WithSummary("Update Room")
+            .WithDescription("Updates an existing room with the specified name, capacity, and base price per hour.");
 
             group.MapDelete("/{id:guid}", async (Guid id, RoomService service) =>
             {
                 await service.DeleteRoomAsync(id);
                 return Results.NoContent();
-            });
+            }).WithSummary("Delete Room")
+              .WithDescription("Deletes an existing room from the system.");
         }
     }
 }
