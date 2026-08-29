@@ -20,6 +20,8 @@ builder.Services.AddSingleton<PricingService>();
 builder.Services.AddScoped<RoomService>();
 builder.Services.AddScoped<BookingService>();
 
+builder.Services.AddScoped<AnalyticsService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -30,5 +32,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapRoomEndpoints();
 app.MapBookingEndpoints();
+app.MapReportEndpoints();
+
 app.UseHttpsRedirection();
 app.Run();
