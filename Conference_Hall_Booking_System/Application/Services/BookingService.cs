@@ -37,5 +37,27 @@ namespace Conference_Hall_Booking_System.Application.Services
             return booking;
         }
 
+        public async Task<IEnumerable<Room>> GetAvailableRoomsAsync(DateTime startTime, DateTime endTime, int minCapacity)
+        {
+            var requestedPeriod = new TimeRange(startTime, endTime);
+            var allRooms = await roomRepository.GetAllAsync();
+
+            var suitableRooms = allRooms.Where(r => r.Capacity >= minCapacity).ToList();
+            var availableRooms = new List<Room>();
+
+            foreach (var room in suitableRooms)
+            {
+                var existingBookings = await bookingRepository.GetByRoomIdAsync(room.Id);
+
+                bool isOccupied = existingBookings.Any(b => b.Period.OverlapsWith(requestedPeriod));
+                if (!isOccupied)
+                {
+                    availableRooms.Add(room);
+                }
+            }
+
+            return availableRooms;
+        }
+
     }
 }
