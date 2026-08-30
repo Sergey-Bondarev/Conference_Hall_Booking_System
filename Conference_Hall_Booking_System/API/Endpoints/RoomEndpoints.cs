@@ -29,7 +29,8 @@ namespace Conference_Hall_Booking_System.API.Endpoints
 
             group.MapPost("/", async (CreateRoomRequest req, RoomService service) =>
             {
-                var room = new Room { Name = req.Name, Capacity = req.Capacity, BasePricePerHour = req.BasePricePerHour };
+                var room = new Room { Name = req.Name, Capacity = req.Capacity, BasePricePerHour = req.BasePricePerHour,
+                AvailableAmenities = req.Amenities.Select(a => new Amenity(a.Name, a.Price)).ToList()};
                 var id = await service.CreateRoomAsync(room);
                 return Results.Created($"/api/rooms/{id}", new { Id = id });
             })
@@ -45,6 +46,7 @@ namespace Conference_Hall_Booking_System.API.Endpoints
                 existingRoom.Name = req.Name;
                 existingRoom.Capacity = req.Capacity;
                 existingRoom.BasePricePerHour = req.BasePricePerHour;
+                existingRoom.AvailableAmenities = req.Amenities.Select(a => new Amenity(a.Name, a.Price)).ToList();
 
                 await service.UpdateRoomAsync(existingRoom);
                 return Results.NoContent();
