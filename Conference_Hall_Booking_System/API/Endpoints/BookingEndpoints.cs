@@ -11,7 +11,7 @@ namespace Conference_Hall_Booking_System.API.Endpoints
         {
             var group = app.MapGroup("/api/bookings").WithTags("Bookings");
 
-            group.MapPost("/", async (BookRoomRequest req, BookingService service) =>
+            group.MapPost("/add", async (BookRoomRequest req, BookingService service) =>
             {
                 try
                 {

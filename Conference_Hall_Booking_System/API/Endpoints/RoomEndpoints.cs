@@ -11,7 +11,7 @@ namespace Conference_Hall_Booking_System.API.Endpoints
         {
             var group = app.MapGroup("/api/rooms").WithTags("Rooms");
 
-            group.MapGet("/", async (RoomService service) =>
+            group.MapGet("/all", async (RoomService service) =>
                 Results.Ok(await service.GetAllRoomsAsync())).WithSummary("Get All Rooms")
                 .WithDescription("Returns a list of all rooms in the system.");
 
@@ -27,7 +27,7 @@ namespace Conference_Hall_Booking_System.API.Endpoints
             }).WithSummary("Search for Available Rooms")
               .WithDescription("Returns a list of rooms that can accommodate the specified number of people and have no existing bookings within the given time range.");
 
-            group.MapPost("/", async (CreateRoomRequest req, RoomService service) =>
+            group.MapPost("/create", async (CreateRoomRequest req, RoomService service) =>
             {
                 var room = new Room { Name = req.Name, Capacity = req.Capacity, BasePricePerHour = req.BasePricePerHour,
                 AvailableAmenities = req.Amenities.Select(a => new Amenity(a.Name, a.Price)).ToList()};
@@ -38,7 +38,7 @@ namespace Conference_Hall_Booking_System.API.Endpoints
             .WithSummary("Create New Room")
             .WithDescription("Creates a new room with the specified name, capacity, and base price per hour.");
 
-            group.MapPut("/{id:guid}", async (Guid id, UpdateRoomRequest req, RoomService service) =>
+            group.MapPut("/update/{id:guid}", async (Guid id, UpdateRoomRequest req, RoomService service) =>
             {
                 var existingRoom = await service.GetRoomAsync(id);
                 if (existingRoom is null) return Results.NotFound();
@@ -55,7 +55,7 @@ namespace Conference_Hall_Booking_System.API.Endpoints
             .WithSummary("Update Room")
             .WithDescription("Updates an existing room with the specified name, capacity, and base price per hour.");
 
-            group.MapDelete("/{id:guid}", async (Guid id, RoomService service) =>
+            group.MapDelete("/delete/{id:guid}", async (Guid id, RoomService service) =>
             {
                 await service.DeleteRoomAsync(id);
                 return Results.NoContent();
